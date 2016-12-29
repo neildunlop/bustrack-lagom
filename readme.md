@@ -58,8 +58,21 @@ run with:
     Content:
     {"chassisNumber":"1234","latitude":"22.5", "longitude":"33.5", "speed":55, "headingDegrees":90, "timestamp":"2014-12-03T10:15:30.00Z"}
     
+ 
+ Connecting to Cassandra
+ ---
+ Depending on what version of CQLSH you have running, you may need to force the protocol version when you connect
+ to the Lagom Cassandra development instance.  This can be done using:
+ 
+ `cqlsh 127.0.0.1 4000  --cqlversion="3.3.1"`
   
+  To show keyspaces use: `describe keyspaces;`
+  To show tables use: 
  
- 
+    `use <keyspace>;`
+    `describe tables;`
+
+ Generating the Project
+ ---
  To generate the project from the command line:
   mvn archetype:generate -DarchetypeGroupId=com.lightbend.lagom -DarchetypeArtifactId=maven-archetype-lagom-java -DarchetypeVersion=1.2.0
