@@ -33,9 +33,9 @@ public class PositionEntityTest {
     @Test
     public void testAddPosition() {
 
-        //ChirpTopicStub topic = new ChirpTopicStub();
+        PositionTopicStub topic = new PositionTopicStub();
         PersistentEntityTestDriver<PositionCommand, PositionEvent, NotUsed> driver =
-                new PersistentEntityTestDriver<>(system, new PositionEntity(), "vehicle1");
+                new PersistentEntityTestDriver<>(system, new PositionEntity(topic), "vehicle1");
 
         Instant timestamp = Instant.now();
         PositionDetail positionDetail = PositionDetail.builder()

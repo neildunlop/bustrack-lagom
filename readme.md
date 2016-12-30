@@ -58,6 +58,16 @@ run with:
     Content:
     {"chassisNumber":"1234","latitude":"22.5", "longitude":"33.5", "speed":55, "headingDegrees":90, "timestamp":"2014-12-03T10:15:30.00Z"}
     
+ Getting Historic Positions
+ ---
+
+ POST
+ http://127.0.0.1:64580/api/position/history
+ Headers: Content-Type: application/json
+     Content:
+     {"chassisNumbers":["1234"],"fromTime":1417601720000}
+ 
+   
  
  Connecting to Cassandra
  ---

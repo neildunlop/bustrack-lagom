@@ -11,6 +11,7 @@ public class PositionModule extends AbstractModule implements ServiceGuiceSuppor
     @Override
     protected void configure() {
         bindServices(serviceBinding(PositionService.class, PositionServiceImpl.class));
+        bind(PositionTopic.class).to(PositionTopicImpl.class);
         bind(PositionRepository.class).to(PositionRepositoryImpl.class);
     }
 }

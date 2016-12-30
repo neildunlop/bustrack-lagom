@@ -2,6 +2,7 @@ package com.pathfinder.position.impl;
 
 import akka.Done;
 import akka.NotUsed;
+import com.google.inject.Inject;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import java.util.Optional;
@@ -14,6 +15,14 @@ import java.util.Optional;
 //suspect this is because it doesn't make sense for a position to have state.. its not an aggregate root?  The positions
 //belong to vehicles.
 public class PositionEntity extends PersistentEntity<PositionCommand, PositionEvent, NotUsed> {
+
+    //allows us to broadcast position detail messages to other services via Kafka.
+    private final PositionTopic topic;
+
+    @Inject
+    public PositionEntity(PositionTopic topic) {
+        this.topic = topic;
+    }
 
     //Wire the command and event handlers into behaviours.
     //There is no state for 'Position' so we pass in an optional not used.  We need to
@@ -31,11 +40,15 @@ public class PositionEntity extends PersistentEntity<PositionCommand, PositionEv
         //handle the 'AddPosition' command by persisting a new PositionAdded PositionEvent to the event store,
         // (the content of which comes from the incoming command).
         //A 'done' is returned to the caller - akka equivilent of HTTP 200
+        //and the position detail is published to the kafka topics for other services to use.
         builder.setCommandHandler(PositionCommand.AddPosition.class,
                 //validation could be inserted here before persisting the command and emitting events.
                 (cmd,ctx) -> ctx.thenPersist(
                         new PositionEvent.PositionAdded(cmd.getPositionDetail()),
-                        evt -> ctx.reply(Done.getInstance())
+                        evt -> {
+                            ctx.reply(Done.getInstance());
+                            topic.publish(cmd.getPositionDetail());
+                        }
                 )
         );
 
