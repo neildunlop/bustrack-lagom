@@ -68,20 +68,19 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public ServiceCall<LivePositionRequest, Source<PositionDetail, ?>> getLivePosition() {
-//        return req -> persistentEntities.getRecentPositions(req.getChassisNumbers()).thenApply(recentPositions -> {
-//            List<Source<PositionDetail, ?>> sources = new ArrayList<>();
-//            for (String chassisNumber : req.getChassisNumbers()) {
-//                sources.add(topic.subscriber(chassisNumber));
-//            }
-//            HashSet<String> users = new HashSet<>(req.getChassisNumbers());
-//            Source<PositionDetail, ?> publishedPositions = Source.from(sources).flatMapMerge(sources.size(), s -> s)
-//                    .filter(c -> users.contains(c.getChassisNumber()));
-//
-//            // We currently ignore the fact that it is possible to get duplicate chirps
-//            // from the recent and the topic. That can be solved with a de-duplication stage.
-//            return Source.from(recentPositions).concat(publishedPositions);
-//        });
-        return null;
+        return req -> positions.getRecentPositions(req.getChassisNumbers()).thenApply(recentPositions -> {
+            List<Source<PositionDetail, ?>> sources = new ArrayList<>();
+            for (String chassisNumber : req.getChassisNumbers()) {
+                sources.add(topic.subscriber(chassisNumber));
+            }
+            HashSet<String> vehcileIds = new HashSet<>(req.getChassisNumbers());
+            Source<PositionDetail, ?> publishedPositions = Source.from(sources).flatMapMerge(sources.size(), s -> s)
+                    .filter(c -> vehcileIds.contains(c.getChassisNumber()));
+
+            // We currently ignore the fact that it is possible to get duplicate positions
+            // from the recent positions query and the 'live' topic. That can be solved with a de-duplication stage.
+            return Source.from(recentPositions).concat(publishedPositions);
+        });
     }
 
     @Override
@@ -89,7 +88,7 @@ public class PositionServiceImpl implements PositionService {
         return req -> {
             PSequence<String> vehicleIds = req.getChassisNumbers();
             long timestamp = req.getFromTime().toEpochMilli();
-            log.debug("Getting historical position...");
+            log.warn("Getting historical position with timestamp: " +Long.toString(timestamp) + " from original instant of: " + req.getFromTime().toString());
             Source<PositionDetail, ?> result = positions.getHistoricalPositions(vehicleIds, timestamp);
             return CompletableFuture.completedFuture(result);
         };
