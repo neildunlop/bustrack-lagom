@@ -115,5 +115,5 @@ This is done via the web socket, so you should switch to ARC Socket tab and send
  - Add validation to position adds and requests.. no point being able add a position to a vehicle that doesn't exist.
  - Switch to a non-dev cassandra instance so things live after environment restart (just a config change)
  - Make a simple system diagram showing the services, topic, entities and actors.
- 
+ - Investigate the Gateway and Locator services - we shouldn't we using the explict port numbers.
  
