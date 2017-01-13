@@ -111,9 +111,14 @@ This is done via the web socket, so you should switch to ARC Socket tab and send
  ---
  - Improve the testing massively and show HOW we can test the system.
  - Figure out how we deploy this outside of conductr
+    See: http://www.lagomframework.com/documentation/1.2.x/java/Overview.html#Deploying-to-other-platforms
+    And: https://github.com/typesafehub/service-locator-dns
+    And: https://thecoderwriter.wordpress.com/2016/09/24/run-a-lagom-service-standalone-with-zookeeper/
+    
  - Build a front end
  - Add validation to position adds and requests.. no point being able add a position to a vehicle that doesn't exist.
  - Switch to a non-dev cassandra instance so things live after environment restart (just a config change)
  - Make a simple system diagram showing the services, topic, entities and actors.
  - Investigate the Gateway and Locator services - we shouldn't we using the explict port numbers.
+ - Add something that requires cross service lookups.. should be easy to do with in-memory actors.
  

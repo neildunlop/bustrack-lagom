@@ -8,7 +8,7 @@ import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import java.util.Optional;
 
 /**
- * Behaviours for the Position.
+ * Behaviours for the Position.  This is the logic of the entity.
  */
 
 //TODO: Note that there is no PositionState for this entity... check out ChirpTimeline for a similar implementation.
@@ -53,7 +53,7 @@ public class PositionEntity extends PersistentEntity<PositionCommand, PositionEv
         );
 
         //Add an event handler to update the current state of the object when a position added event is received.
-        //TODO: What does 'state()' do?
+        //TODO: What does 'state()' do? - gives you the current state of the entity I believe...
         builder.setEventHandler(PositionEvent.PositionAdded.class, evt -> state());
     }
 

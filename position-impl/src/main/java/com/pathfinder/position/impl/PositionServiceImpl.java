@@ -5,6 +5,7 @@ import akka.NotUsed;
 import akka.stream.javadsl.Source;
 import com.google.inject.Inject;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.api.transport.NotFound;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRef;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRegistry;
 import com.lightbend.lagom.javadsl.pubsub.PubSubRef;
@@ -61,13 +62,14 @@ public class PositionServiceImpl implements PositionService {
               //This locates the akka actor responsible for this position entity and sends the command?
               PersistentEntityRef<PositionCommand> ref =
                     persistentEntities.refFor(PositionEntity.class, vehicleId);
-              log.debug("Adding position...");
+              log.warn("Adding position...");
             return ref.ask(new PositionCommand.AddPosition(request));
         };
     }
 
     @Override
     public ServiceCall<LivePositionRequest, Source<PositionDetail, ?>> getLivePosition() {
+        log.warn("Getting live positions");
         return req -> positions.getRecentPositions(req.getChassisNumbers()).thenApply(recentPositions -> {
             List<Source<PositionDetail, ?>> sources = new ArrayList<>();
             for (String chassisNumber : req.getChassisNumbers()) {
