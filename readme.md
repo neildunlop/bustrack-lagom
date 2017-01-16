@@ -122,3 +122,8 @@ This is done via the web socket, so you should switch to ARC Socket tab and send
  - Investigate the Gateway and Locator services - we shouldn't we using the explict port numbers.
  - Add something that requires cross service lookups.. should be easy to do with in-memory actors.
  
+ 
+ Notes
+ ===
+ Do I need a 'journey' entity links a vehicle and position updates?
+ (is this analagous to the Auction entity? - When do journeys end?)

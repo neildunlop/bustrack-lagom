@@ -12,6 +12,7 @@ public class VehicleModule extends AbstractModule implements ServiceGuiceSupport
 
     @Override
     protected void configure() {
+
         bindServices(serviceBinding(VehicleService.class, VehicleServiceImpl.class));
     }
 }
