@@ -64,9 +64,11 @@ public class PositionServiceImpl implements PositionService {
 
         return request -> {
 
-            //hoping this just pukes if it can't find the vehicle
-            CompletionStage<Optional<VehicleDetails>> response = vehicleService.getVehicle(vehicleId).invoke();
+//            vehicleService.getVehicle(vehicleId).invoke().thenAccept(vehicleDetails -> {
+//                //do stuff here
+//            });
 
+            CompletionStage<Optional<VehicleDetails>> response = vehicleService.getVehicle(vehicleId).invoke();
             try {
                 if (response.toCompletableFuture().get().isPresent()) {
                     //This locates the akka actor responsible for this position entity and sends the command

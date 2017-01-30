@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
 import com.pathfinder.vehicle.api.VehicleService;
 
-
 /**
  * Google Guice module.
  */
